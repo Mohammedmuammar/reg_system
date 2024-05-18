@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
+
+<body>
+    <div class="search-container">
+        <form action="{% url 'search' %}" method="GET">
+            <input type="text" name="query" class="search-input" placeholder="Search for courses..." />
+            <button class="search-button" type="submit"><i class='bx bx-search'></i></button>
+        </form>
+
+    </div>
+    <!-- search_results.html -->
+    <div class="search-results">
+            {% if search_details %}
+        <div class="course-details">
+            <pre>{{ search_details }}</pre>
+        </div>
+        {% else %}
+        {% comment %} Display "No results found" message only when search results are empty {% endcomment %}
+        {% if not search_results and request.GET.query %}
+            <p style="color: red; font-size : 40px;" >No results found.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

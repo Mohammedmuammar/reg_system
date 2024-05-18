@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}"> <!-- Link to the registration page CSS file -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"> <!-- Link to BoxIcons CSS -->
+    <!-- Include JavaScript file for error handling -->
+</head>
+<body>
+        <div class="wrapper">
+            <span class="bg-animate"></span>
+            <div class="form-box register">
+                <h2>Register</h2>
+                <form method="post" >
+                    {% csrf_token %}
+                    {# Display custom validation error message #}
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            {% if error.code == 'invalid_credentials' %}
+                                <div class="notification is-danger">
+                                    <p>{{ error }}</p>
+                                </div>
+                            {% else %}
+                                <div class="notification is-danger">
+                                    <p>{{ error }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <div class="input-box">
+                        <input type="text" name="username" required>
+                        <label>Username</label>
+                        <i class='bx bxs-user'></i> <!-- BoxIcons user icon -->
+                        {% if form.username.errors %}
+                        <div class="alert alert-danger">
+                            <strong style="color: red;">{{ form.username.errors }}</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="input-box">
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                        <i class='bx bxs-envelope'></i> <!-- BoxIcons envelope icon -->
+                        {% if form.email.errors %}
+                        <div class="alert alert-danger">
+                            <strong style="color: red;">{{ form.email.errors }}</strong>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                        <i class='bx bxs-lock'></i> <!-- BoxIcons lock icon -->
+                        {% if form.password.errors %}
+                        <div class="alert alert-danger">
+                            <strong style="color: red;">{{ form.password.errors }}</strong>
+                        </div>  
+                        {% endif %}
+                    </div>
+                    <div class="input-box">
+                        <input type="password" name="confirm_password" required>
+                        <label>Confirm Password</label>
+                        <i class='bx bxs-lock-alt'></i> <!-- BoxIcons lock-alt icon -->
+                        {% if form.confirm_password.errors %}
+                        <div class="alert alert-danger">
+                            <strong style="color: red;">{{ form.confirm_password.errors }}</strong>
+                        </div>          
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                    <div class="logreg-link">
+                        <p>Already have an account? <a href="{% url 'login' %}" class="login-link">Login</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="info-text register">
+                <h2>Welcome!</h2>
+                <p>Create an account to access course registration.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+{% endblock %}
+

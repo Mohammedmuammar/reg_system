@@ -1,0 +1,69 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Registration System</title>
+  <link rel="icon" href="{% static 'image/icon1.png' %}">
+  <link rel="stylesheet"  href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="brand">Course Registration</a>
+      <ul class="nav-list">
+        {% if user.is_authenticated %}
+
+        <li>
+          <button id="notification-icon"><i class='bx bxs-bell'></i></button>
+          <div id="notification-dropdown" class="dropdown-content">
+              <!-- Notifications will be displayed here -->
+          </div>
+      </li>
+          <li><a href="{% url 'search' %}"><i class='bx bx-search'></i> </a></li>
+          <li><a href="{% url 'courses' %}">courses</a></li>
+          <li><a href="{% url 'coursedetails' %}">Registeration</a></li>
+          <li><a href="{% url 'course_schedule' %}">course schedule</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+
+        {% else %}
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'signup' %}">Sign up</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <script>
+    document.getElementById('notification-icon').addEventListener('click', function() {
+        fetch('/get-notifications/')  // Replace with your URL endpoint for fetching notifications
+            .then(response => response.json())
+            .then(data => {
+                const notificationDropdown = document.getElementById('notification-dropdown');
+                notificationDropdown.innerHTML = ''; // Clear existing notifications
+                data.forEach(notification => {
+                    const notificationElement = document.createElement('div');
+                    notificationElement.textContent = notification.message;
+                    notificationDropdown.appendChild(notificationElement);
+                });
+                // Show the notification dropdown
+                notificationDropdown.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error fetching notifications:', error);
+            });
+    });
+</script>
+
+
+</body>
+</html>

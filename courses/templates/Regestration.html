@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet"  href="{% static 'css/reg.css' %}">
+</head>
+<body>
+    {% if course_data %}
+    <form method="post" action="{% url 'add_to_registration' %}">
+    {% csrf_token %}
+        {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                    <strong style="color: red;">{{ message }}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Instructor</th>
+                <th>Capacity</th>
+                <th>Schedule</th>
+                <th>Room</th>
+                <th>Add to course schedule</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in course_data %}
+            {% for schedule in data.schedule %}
+            <tr>
+                <td>{{ data.course.course_code }}</td>
+                <td>{{ data.course.course_name }}</td>
+                <td>{{ data.course.instructor_name }}</td>
+                <td>{{ data.capacity_fraction}}</td>
+                <td>{{ schedule.start_time|time:"h:i" }} - {{ schedule.end_time|time:"h:i" }}</td>
+                <td>{{ schedule.room_no }}</td>
+                <td><input type="checkbox" name="selected_courses" value="{{ data.course.id }}"></td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="button-container">
+    <button type="submit">Add Courses to Registration</button>
+    </div>
+    </form>
+    {% else %}
+    <p>No courses available that meet the prerequisites.</p>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"  href="{% static 'css/Login.css' %}">
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+</head>
+<body>
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <div class="form-box login">
+            <h2> Login </h2>
+            <form  method="post">
+                {% csrf_token %}
+                {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                    <strong style="color: red;">{{ message }}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+                <div class="input-box">
+                    <input type="text" name="email" required>
+                    <label>Email</label>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <!-- Display username errors -->
+                <div class="input-box">
+                    <input type="password" name="password" required>
+                    <label>Password</label>
+                    <i class='bx bxs-lock'></i>
+                </div>
+                <!-- Display password errors -->
+                
+                <button type="submit" class="btn">Login</button>
+                <div class="logreg-link">
+                    <p>Don't have an account? <a href="{% url 'signup' %}" class="register-link">Sign Up</a></p>
+                </div>
+            </form>
+            
+        </div>
+        <div class="info-text login">
+            <h2> Welcome Back! </h2>
+            <p>Please log in to your account.</p>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
